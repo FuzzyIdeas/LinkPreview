@@ -1,22 +1,26 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by 이웅재 on 2021/12/08.
 //
 
-import SwiftUI
 import SafariServices
+import SwiftUI
 
-struct SfSafariView: UIViewControllerRepresentable {
+#if os(iOS)
+    import UIKit
 
-    let url: URL
+    struct SFSafariView: UIViewControllerRepresentable {
+        let url: URL
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<SfSafariView>) -> SFSafariViewController {
-        return SFSafariViewController(url: url)
+        func makeUIViewController(context: UIViewControllerRepresentableContext<SfSafariView>) -> SFSafariViewController {
+            SFSafariViewController(url: url)
+        }
+
+        func updateUIViewController(
+            _ uiViewController: SFSafariViewController,
+            context: UIViewControllerRepresentableContext<SfSafariView>
+        ) {}
     }
-
-    func updateUIViewController(_ uiViewController: SFSafariViewController, context: UIViewControllerRepresentableContext<SfSafariView>) {
-
-    }
-}
+#endif
