@@ -23,7 +23,9 @@ struct LinkPreviewDesign: View {
         backgroundColor: Color,
         primaryFontColor: Color,
         secondaryFontColor: Color,
-        titleLineLimit: Int
+        titleLineLimit: Int,
+        maxWidth: CGFloat?,
+        cornerRadius: CGFloat
     ) {
         self.metaData = metaData
         self.type = type
@@ -31,6 +33,8 @@ struct LinkPreviewDesign: View {
         self.primaryFontColor = primaryFontColor
         self.secondaryFontColor = secondaryFontColor
         self.titleLineLimit = titleLineLimit
+        self.maxWidth = maxWidth
+        self.cornerRadius = cornerRadius
     }
 
     // MARK: Internal
@@ -80,8 +84,7 @@ struct LinkPreviewDesign: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 32, height: 32, alignment: .center)
-                    .clipped()
-                    .cornerRadius(4)
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
             } else {
                 Image(systemName: "arrow.up.forward.app.fill")
                     .resizable()
@@ -92,11 +95,8 @@ struct LinkPreviewDesign: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(
-            Rectangle()
-                .foregroundColor(backgroundColor)
-        )
-        .cornerRadius(12)
+        .background(backgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
 
     @ViewBuilder
@@ -106,56 +106,50 @@ struct LinkPreviewDesign: View {
                 ZStack(alignment: .bottomTrailing) {
                     img(image)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
+                        .scaledToFill()
+                        .frame(maxWidth: maxWidth)
                         .clipped()
-
-                    if let icon {
-                        img(icon)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 32, height: 32, alignment: .center)
-                            .cornerRadius(6)
-                            .padding(.all, 8)
-                    }
                 }
             }
-            HStack(spacing: 8) {
+            HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     if let title = metaData.title {
-                        Text(title)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .multilineTextAlignment(.leading)
-                            .foregroundColor(primaryFontColor)
-                            .lineLimit(titleLineLimit)
-                            .padding(.bottom, image == nil ? 0 : 4)
+                        HStack(spacing: 2) {
+                            if let icon {
+                                img(icon)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 11, height: 11, alignment: .center)
+                            }
+                            Text(title)
+                                .font(.system(size: 11, weight: .light))
+                                .multilineTextAlignment(.leading)
+                                .foregroundColor(primaryFontColor)
+                                .lineLimit(titleLineLimit)
+                        }
                     }
 
                     if let url = metaData.url?.host {
                         Text("\(url)")
                             .foregroundColor(secondaryFontColor)
                             .font(.footnote)
+                            .padding(.leading, icon == nil ? 0 : 13)
                     }
                 }
 
-                if image != nil {
-                    Spacer()
-                } else {
+                if image == nil {
                     Image(systemName: "arrow.up.forward.app.fill")
                         .resizable()
                         .foregroundColor(secondaryFontColor)
-                        .aspectRatio(contentMode: .fit)
+                        .scaledToFit()
                         .frame(width: 24, height: 24, alignment: .center)
                 }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(
-                Rectangle()
-                    .foregroundColor(backgroundColor)
-            )
+            .background(backgroundColor)
         }
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
     }
 
     func getImage() {
@@ -190,6 +184,8 @@ struct LinkPreviewDesign: View {
     private let primaryFontColor: Color
     private let secondaryFontColor: Color
     private let titleLineLimit: Int
+    private let maxWidth: CGFloat?
+    private let cornerRadius: CGFloat
 }
 
 // MARK: - LinkPreviewType

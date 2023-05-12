@@ -36,6 +36,20 @@ public extension LinkPreview {
         return result
     }
 
+    func maxWidth(_ maxWidth: CGFloat?) -> LinkPreview {
+        var result = self
+
+        result.maxWidth = maxWidth
+        return result
+    }
+
+    func cornerRadius(_ cornerRadius: CGFloat) -> LinkPreview {
+        var result = self
+
+        result.cornerRadius = cornerRadius
+        return result
+    }
+
     func type(_ type: LinkPreviewType) -> LinkPreview {
         var result = self
 

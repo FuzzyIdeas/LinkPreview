@@ -24,7 +24,9 @@ public struct LinkPreview: View {
                         backgroundColor: backgroundColor,
                         primaryFontColor: primaryFontColor,
                         secondaryFontColor: secondaryFontColor,
-                        titleLineLimit: titleLineLimit
+                        titleLineLimit: titleLineLimit,
+                        maxWidth: maxWidth,
+                        cornerRadius: cornerRadius
                     )
                 })
                 .buttonStyle(LinkButton())
@@ -73,6 +75,8 @@ public struct LinkPreview: View {
     var primaryFontColor: Color = .primary
     var secondaryFontColor: Color = .secondary
     var titleLineLimit = 3
+    var maxWidth: CGFloat? = nil
+    var cornerRadius: CGFloat = 12
     var type: LinkPreviewType = .auto
 
     func openURL(_ url: URL) {
