@@ -14,13 +14,13 @@ import SwiftUI
     struct SFSafariView: UIViewControllerRepresentable {
         let url: URL
 
-        func makeUIViewController(context: UIViewControllerRepresentableContext<SfSafariView>) -> SFSafariViewController {
+        func makeUIViewController(context: UIViewControllerRepresentableContext<SFSafariView>) -> SFSafariViewController {
             SFSafariViewController(url: url)
         }
 
         func updateUIViewController(
             _ uiViewController: SFSafariViewController,
-            context: UIViewControllerRepresentableContext<SfSafariView>
+            context: UIViewControllerRepresentableContext<SFSafariView>
         ) {}
     }
 #endif
