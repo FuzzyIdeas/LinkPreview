@@ -114,12 +114,13 @@ struct LinkPreviewDesign: View {
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     if let title = metaData.title {
-                        HStack(spacing: 2) {
+                        HStack(spacing: 4) {
                             if let icon {
                                 img(icon)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 11, height: 11, alignment: .center)
+                                    .cornerRadius(2)
                             }
                             Text(title)
                                 .font(.system(size: 11, weight: .light))
@@ -133,7 +134,7 @@ struct LinkPreviewDesign: View {
                         Text("\(url)")
                             .foregroundColor(secondaryFontColor)
                             .font(.footnote)
-                            .padding(.leading, icon == nil ? 0 : 13)
+                            .padding(.leading, icon == nil ? 0 : 15)
                     }
                 }
 
