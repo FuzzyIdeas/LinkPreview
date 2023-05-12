@@ -76,6 +76,7 @@ struct LinkPreviewDesign: View {
                     Text("\(url)")
                         .foregroundColor(secondaryFontColor)
                         .font(.footnote)
+                        .lineLimit(1)
                 }
             }
 
@@ -133,7 +134,8 @@ struct LinkPreviewDesign: View {
                     if let url = metaData.url?.host {
                         Text("\(url)")
                             .foregroundColor(secondaryFontColor)
-                            .font(.footnote)
+                            .font(.system(size: 10, weight: .medium))
+                            .lineLimit(1)
                             .padding(.leading, icon == nil ? 0 : 15)
                     }
                 }
