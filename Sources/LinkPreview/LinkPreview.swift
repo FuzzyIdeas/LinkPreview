@@ -37,6 +37,25 @@ public struct LinkPreview: View {
                     }
                 #endif
                     .animation(.spring(), value: metaData)
+            } else if noMetaData {
+                HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("\(url)")
+                            .foregroundColor(secondaryFontColor)
+                            .font(.footnote)
+                            .lineLimit(2)
+                    }
+
+                    Image(systemName: "arrow.up.forward.app.fill")
+                        .resizable()
+                        .foregroundColor(secondaryFontColor)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 16, height: 16, alignment: .center)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(backgroundColor)
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             } else {
                 HStack(spacing: 10) {
                     ProgressView()
@@ -91,6 +110,7 @@ public struct LinkPreview: View {
 
     func getMetaData(url: URL) {
         if let meta = (try? cache.object(forKey: url.absoluteString))?.lpLinkMetadata {
+            print("Cached Metadata for \(url): \(meta)")
             withAnimation(.spring()) {
                 metaData = meta
             }
@@ -99,11 +119,15 @@ public struct LinkPreview: View {
 
         let provider = LPMetadataProvider()
         provider.startFetchingMetadata(for: url) { meta, err in
-            guard let meta else { return }
-            try? cache.setObject(meta.codable, forKey: url.absoluteString)
-            withAnimation(.spring()) {
-                metaData = meta
+            guard let meta else {
+                print("No Metadata fetched for \(url)")
+                withAnimation(.spring()) { noMetaData = true }
+                return
             }
+
+            print("Fetched Metadata for \(url): \(meta)")
+            try? cache.setObject(meta.codable, forKey: url.absoluteString)
+            withAnimation(.spring()) { metaData = meta }
         }
     }
 
@@ -111,6 +135,7 @@ public struct LinkPreview: View {
 
     @State private var isPresented = false
     @State private var metaData: LPLinkMetadata? = nil
+    @State private var noMetaData = false
 }
 
 extension LPLinkMetadata {
