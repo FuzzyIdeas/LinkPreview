@@ -108,7 +108,7 @@ struct LinkPreviewDesign: View {
                     img(image)
                         .resizable()
                         .scaledToFill()
-                        .frame(maxWidth: maxWidth)
+                        .frame(maxWidth: maxWidth, alignment: .center)
                         .clipped()
                 }
             }
